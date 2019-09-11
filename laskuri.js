@@ -50,11 +50,11 @@
 
 document.getElementsByName('arvosana')
 
-/*function selected(){
+function selected(){
   var selector = document.getElementById('yolista');
   var value = selector[selector.selectedIndex].value;
   document.getElementById('display').innerHTML = value;
-}*/
+}
 document.getElementById('btn').addEventListener('click', selected);
 
 var lista = [];

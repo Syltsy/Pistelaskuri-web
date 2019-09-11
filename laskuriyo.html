@@ -3,7 +3,6 @@
   <head>
     <meta charset="utf-8">
     <script src="laskuri.js" charset="utf-8"></script>
-    <link rel="stylesheet" href="/styles.css">
     <title>Ylioppilas pistelaskuri</title>
   </head>
 
@@ -18,26 +17,26 @@
       <option value="kieliP">Vieras/toinen kotimainen kieli pitkä</option>
       <option value="kieliK">Vieras/toinen kotimainen kieli keskipitkä</option>
       <option value="kieliL">Vieras/toinen kotimainen kieli lyhyt</option>
-      <option value="muut">Fysiikka</option>
-      <option value="muut">Kemia</option>
-      <option value="muut">Biologia</option>
-      <option value="muut">Maantiede</option>
-      <option value="muut">Terveystieto</option>
-      <option value="muut">Psykologia</option>
-      <option value="muut">Filosofia</option>
-      <option value="muut">Historia</option>
-      <option value="muut">Yhteiskuntaoppi</option>
-      <option value="muut">Uskonto/Elämäntieto</option>
+      <option value="muut">Reaaliaine: Fysiikka</option>
+      <option value="muut">Reaaliaine: Kemia</option>
+      <option value="muut">Reaaliaine: Biologia</option>
+      <option value="muut">Reaaliaine: Maantiede</option>
+      <option value="muut">Reaaliaine: Terveystieto</option>
+      <option value="muut">Reaaliaine: Psykologia</option>
+      <option value="muut">Reaaliaine: Filosofia</option>
+      <option value="muut">Reaaliaine: Historia</option>
+      <option value="muut">Reaaliaine: Yhteiskuntaoppi</option>
+      <option value="muut">Reaaliaine: Uskonto/Elämäntieto</option>
       <option value="muut">Vieraskieli(pitkä/lyhyt)</option>
-    </select> <!-- jos Äidinkieli kirjoitettu, pakko huomioida jos matematiikka ja vieras/toinen kieli kirjoitettu, pakko huomioida -->
+    </select> <!-- jos Äidinkieli kirjoitettu, pakko huomioida, jos matematiikka ja vieras/toinen kieli kirjoitettu, pakko huomioida -->
 
     <select id="arvosana" class="" name="arvosana"> <!-- Arvosanalista -->
-      <option value="document.getElementById('display').innerHTML">L</option>
-      <option value="document.getElementById('display').innerHTML">E</option>
-      <option value="document.getElementById('display').innerHTML">M</option>
-      <option value="document.getElementById('display').innerHTML">C</option>
-      <option value="document.getElementById('display').innerHTML">B</option>
-      <option value="document.getElementById('display').innerHTML">A</option>
+      <option value="yolista.value">L</option>
+      <option value="yolista.value">E</option>
+      <option value="yolista.value">M</option>
+      <option value="yolista.value">C</option>
+      <option value="yolista.value">B</option>
+      <option value="yolista.value">A</option>
     </select>
     <button type="button" id="btn" name="button" onclick="addElement">Lisää</button>
 
@@ -63,7 +62,9 @@
 </html>
 
 <script> //Arvosanojen pistemäärä aineen pituuden ja painotuksen mukaan
-    var mathP = {
+    var dataSet = [
+    {
+      nimi: mathP,
       L: 46,
       E: 43,
       M: 40,
@@ -71,7 +72,8 @@
       B: 27,
       A: 19
     },
-    var mathL = {
+    {
+      nimi: mathL,
       L: 40,
       E: 35,
       M: 27,
@@ -79,7 +81,8 @@
       B: 13,
       A: 6
     },
-    var kieliP = {
+    {
+      nimi: kieliP,
       L: 46,
       E: 41,
       M: 34,
@@ -87,7 +90,8 @@
       B: 18,
       A: 10
     },
-    var kieliK = {
+    {
+      nimi: kieliK,
       L: 38,
       E: 34,
       M: 26,
@@ -95,7 +99,8 @@
       B: 12,
       A: 5
     },
-    var kieliL = {
+    {
+      nimi: kieliL,
       L: 30,
       E: 27,
       M: 21,
@@ -103,14 +108,15 @@
       B: 9,
       A: 3
     },
-    var muut = {
+    {
+      nimi: muut,
       L: 30,
       E: 27,
       M: 21,
       C: 15,
       B: 9,
       A: 3
-    }
+    }]
 
 //var div = document.getElementById('divID'); //Lisää dataa HTML elementtiin
 //div.innerHTML += 'Extra stuff';
@@ -121,15 +127,15 @@ function selected(){
   document.getElementById('display').innerHTML = value;
 }
 
-function addElement(){
-  var node = document.createElement("LI");                                      // Create a <li> node
-  var textnode = document.createTextNode(document.getElementById('yolista'));     // Create a text node
+function addElement(){  //Lisää syötetyn aineen ja arvosanan listaan.
+  var node = document.createElement("LI");
+  var textnode = document.createTextNode(document.getElementById('yolista'));
   var numbernode = document.createTextNode(document.getElementById('arvosana'));
   var valuenode = document.createTextNode(document.getElementById('pisteet'));
-  node.appendChild(textnode);                                                   // Append the text to <li>
+  node.appendChild(textnode);
   node.appendChild(numbernode);
   node.appendChild(valuenode);
-  document.getElementById("yolista").appendChild(node);                         // Append <li> to <ul> with id="myList"
+  document.getElementById("yolista").appendChild(node);
   document.getElementById('btn').addEventListener('click', selected);
 }
 
@@ -137,31 +143,19 @@ function sortTable() {
   var table, rows, switching, i, x, y, shouldSwitch; //Järjestelee taulukon haluttuun järjestykseen
   table = document.getElementById("myTable");
   switching = true;
-  /* Make a loop that will continue until
-  no switching has been done: */
   while (switching) {
-    // Start by saying: no switching is done:
     switching = false;
     rows = table.rows;
-    /* Loop through all table rows (except the
-    first, which contains table headers): */
     for (i = 1; i < (rows.length - 1); i++) {
-      // Start by saying there should be no switching:
       shouldSwitch = false;
-      /* Get the two elements you want to compare,
-      one from current row and one from the next: */
       x = rows[i].getElementsByTagName("TD")[0];
       y = rows[i + 1].getElementsByTagName("TD")[0];
-      // Check if the two rows should switch place:
       if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-        // If so, mark as a switch and break the loop:
         shouldSwitch = true;
         break;
       }
     }
     if (shouldSwitch) {
-      /* If a switch has been marked, make the switch
-      and mark that a switch has been done: */
       rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
       switching = true;
     }
